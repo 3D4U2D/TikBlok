@@ -1,5 +1,5 @@
 // TikBlok service worker: werkt offline, haalt updates op zodra er internet is.
-const CACHE = 'tikblok-v1';
+const CACHE = 'tikblok-v2';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
