@@ -177,6 +177,24 @@ table.pts td{padding:5px 8px;border-bottom:1px solid var(--line);font-weight:800
 table.pts td:last-child{text-align:right;color:var(--accent2)}
 .spec{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
 .spec p{margin:0}
+.help h2{margin:0;font-size:22px}
+.help h3{margin:12px 0 6px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+.help .dim{font-weight:700;text-transform:none;letter-spacing:0;opacity:.8}
+.hhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hhead .btn{flex:none;height:42px;padding:0 18px}
+.help p.lead{margin:10px 0 0;font-size:14.5px;line-height:1.4}
+.hmodes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.hmodes div{background:var(--card);border:1px solid var(--cardb);border-radius:12px;padding:9px 10px}
+.hmodes b{display:block;font-size:14px}
+.hmodes span{display:block;font-size:12.5px;line-height:1.35;color:var(--muted);margin-top:2px}
+.pchips{display:flex;gap:6px}
+.pchip{flex:1;text-align:center;background:var(--card);border-radius:10px;padding:6px 2px;font-size:12.5px;font-weight:800;color:var(--accent2);white-space:nowrap}
+.pchip b{display:block;color:var(--ink);font-size:13px}
+.pchip b::after{content:' st.'}
+.hspecs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hspecs div{display:flex;align-items:center;gap:8px;font-size:12.5px;line-height:1.3;color:var(--muted)}
+.hspecs b{color:var(--ink)}
+.help p.foot{margin:12px 0 0;font-size:12.5px;line-height:1.4}
 .mini{display:inline-block;position:relative;width:30px;height:30px;--t:30px;flex:none}
 </style>
 </head>
@@ -687,21 +705,25 @@ function openStats(confirmReset){
 }
 function openHelp(){
   const mini=(cls,g)=>`<span class="mini ${cls}"><i>${g||''}</i></span>`;
-  const rows=[[2,10],[4,40],[5,90],[6,160],[8,360],[10,640],[15,1690]].map(([n,p])=>`<tr><td>${n} blokjes</td><td>+${fmt(p)}</td></tr>`).join('');
-  openModal(`<h2>Hoe speel je?</h2>
-    <p>Tik op een groep aaneengesloten blokjes van dezelfde kleur om hem weg te spelen. <b>Hoe groter de groep, hoe meer punten.</b></p>
-    <h3>Modi</h3>
-    <p><b>Vast veld</b>: blokjes vallen naar beneden en lege kolommen schuiven naar links. Speel je het bord leeg, dan krijg je een nieuw bord en loopt je score door. Geen zetten meer betekent einde.</p>
-    <p><b>Stijgend</b>: onderaan vult zich steeds een nieuwe rij die het veld in schuift. Raakt een kolom de bovenrand, dan is het voorbij.</p>
-    <h3>Punten</h3>
-    <table class="pts">${rows}</table>
-    <h3>Specials <span style="font-weight:700;color:var(--muted)">(zeldzaam)</span></h3>
-    <div class="spec">${mini('k-joker',GLYPH.joker)}<p><b>Joker</b>: telt mee als elke kleur en kan zo twee groepen verbinden.</p></div>
-    <div class="spec">${mini('c3 k-star',GLYPH.star)}<p><b>Ster</b>: de groep waar hij in zit levert dubbele punten op.</p></div>
-    <div class="spec">${mini('k-bomb',GLYPH.bomb)}<p><b>Mini-bom</b>: tik erop om hem en zijn 4 directe buren weg te halen.</p></div>
-    <div class="spec">${mini('c2 k-paint',GLYPH.paint)}<p><b>Verfpot</b>: tik erop om zijn directe buren in zijn kleur te verven.</p></div>
-    <h3>Hint</h3><p>Toont de grootste groep op het bord. Kost ${HINT_COST} punten.</p>
-    <div class="stack"><button class="btn primary" data-act="close">Spelen</button></div>`);
+  const pts=[[2,10],[5,90],[8,360],[10,640],[15,1690]].map(([n,p])=>`<span class="pchip"><b>${n}</b>+${fmt(p)}</span>`).join('');
+  openModal(`<div class="help">
+    <div class="hhead"><h2>Hoe speel je?</h2><button class="btn primary" data-act="close">Spelen ▶︎</button></div>
+    <p class="lead">Tik op een groep aaneengesloten blokjes van dezelfde kleur om hem weg te spelen. <b>Hoe groter de groep, hoe meer punten.</b></p>
+    <div class="hmodes">
+      <div><b>Vast veld</b><span>Speel het bord leeg voor een nieuw bord. Geen zetten meer = einde.</span></div>
+      <div><b>Stijgend</b><span>Onderaan komen steeds nieuwe rijen bij. Raakt een kolom de top = einde.</span></div>
+    </div>
+    <h3>Punten per groepsgrootte</h3>
+    <div class="pchips">${pts}</div>
+    <h3>Specials <span class="dim">(zeldzaam)</span></h3>
+    <div class="hspecs">
+      <div>${mini('k-joker',GLYPH.joker)}<span><b>Joker</b> telt als elke kleur</span></div>
+      <div>${mini('c3 k-star',GLYPH.star)}<span><b>Ster</b> dubbele punten</span></div>
+      <div>${mini('k-bomb',GLYPH.bomb)}<span><b>Bom</b> tik: weg + 4 buren</span></div>
+      <div>${mini('c2 k-paint',GLYPH.paint)}<span><b>Verf</b> tik: buren krijgen zijn kleur</span></div>
+    </div>
+    <p class="foot">💡 <b>Hint</b> toont de grootste groep (−${HINT_COST}) · ↶ <b>Terug</b> herstelt je laatste zet (vast veld)</p>
+  </div>`);
 }
 modalEl.addEventListener('click',e=>{
   if(e.target===modalEl){if(!modalLock)closeModal();return;}
