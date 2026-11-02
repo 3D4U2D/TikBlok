@@ -239,7 +239,7 @@ const fmt=n=>Math.round(n).toLocaleString('nl-NL');
 const rnd=n=>Math.floor(Math.random()*n);
 
 /* ---------- instellingen ---------- */
-const DEF={cols:12,rows:15,colors:5,minVast:2,minStijg:2,tempo:'normaal',specials:true,sound:true,vibrate:true};
+const DEF={cols:12,rows:15,colors:4,minVast:2,minStijg:2,tempo:'normaal',specials:true,sound:true,vibrate:true};
 let S=Object.assign({},DEF,store.get('settings',{}));
 const TEMPO={rustig:7000,normaal:5000,snel:3500};
 const SPECIAL_CHANCE=1/90, SPECIAL_MAX=2, HINT_COST=50;
@@ -673,7 +673,7 @@ function openSettings(keep){
     ${structural?'<p class="note" style="margin-top:12px">Veld- en regelwijzigingen starten een nieuw spel.</p>':''}
     <div class="stack">
       <button class="btn primary" data-act="savesettings">${structural?'Opslaan &amp; nieuw spel':'Opslaan'}</button>
-      <button class="btn" data-act="classic">Klassiek herstellen (12×15, 5 kleuren)</button>
+      <button class="btn" data-act="classic">Standaard herstellen (12×15, 4 kleuren)</button>
       <button class="btn" data-act="close">Annuleren</button>
     </div>`);
 }
