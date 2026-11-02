@@ -370,7 +370,7 @@ function select(c,r,silent,extra){
   sel={anchor:cell(c,r),info:inf};
   inf.cells.forEach(([x,y])=>cell(x,y).el.classList.add('sel'));
   gridEl.classList.add('has-sel');
-  setHint(inf.label+(extra||'')+(lastPointer==='mouse'?'':' — tik nog eens'),true);
+  setHint(inf.label+(extra||'')+'',true);
   if(!silent)sound('select');
 }
 function nope(c,r){
@@ -392,9 +392,7 @@ gridEl.addEventListener('pointerdown',e=>{
   ensureAudio();
   const p=cellFromEvent(e);if(!p){clearSel();return;}
   const [c,r]=p,tl=cell(c,r);if(!tl){clearSel();return;}
-  const inSel=sel&&sel.info.cells.some(([x,y])=>cell(x,y)===tl);
-  if(lastPointer==='mouse'||inSel){activate(c,r);hoverTile=null;}
-  else select(c,r);
+  activate(c,r);hoverTile=null;
 });
 gridEl.addEventListener('pointermove',e=>{
   if(e.pointerType!=='mouse'||!G||G.over||paused)return;
@@ -690,7 +688,7 @@ function openHelp(){
   const mini=(cls,g)=>`<span class="mini ${cls}"><i>${g||''}</i></span>`;
   const rows=[[2,10],[4,40],[5,90],[6,160],[8,360],[10,640],[15,1690]].map(([n,p])=>`<tr><td>${n} blokjes</td><td>+${fmt(p)}</td></tr>`).join('');
   openModal(`<h2>Hoe speel je?</h2>
-    <p>Tik op een groep aaneengesloten blokjes van dezelfde kleur om hem te selecteren. Tik nog eens om hem weg te spelen. <b>Hoe groter de groep, hoe meer punten.</b></p>
+    <p>Tik op een groep aaneengesloten blokjes van dezelfde kleur om hem weg te spelen. <b>Hoe groter de groep, hoe meer punten.</b></p>
     <h3>Modi</h3>
     <p><b>Vast veld</b>: blokjes vallen naar beneden en lege kolommen schuiven naar links. Speel je het bord leeg, dan krijg je een nieuw bord en loopt je score door. Geen zetten meer betekent einde.</p>
     <p><b>Stijgend</b>: onderaan vult zich steeds een nieuwe rij die het veld in schuift. Raakt een kolom de bovenrand, dan is het voorbij.</p>
